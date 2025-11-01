@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,7 +32,16 @@ namespace DataAccess
                 acc.FullName = reader["FullName"].ToString();
                 acc.Email = reader["Email"].ToString();
                 acc.Tell = reader["Tell"].ToString();
-                acc.DateCreated = Convert.ToDateTime(reader["DateCreated"]);
+                if (reader["DateCreated"] != DBNull.Value)
+                {
+                    // Nếu không NULL, thì mới chuyển đổi
+                    acc.DateCreated = Convert.ToDateTime(reader["DateCreated"]);
+                }
+                else
+                {
+                    // Tùy chọn: Nếu bạn muốn gán một ngày mặc định khi nó bị NULL
+                    // account.DateCreated = DateTime.MinValue; 
+                }
 
                 list.Add(acc);
             }
